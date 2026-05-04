@@ -692,8 +692,8 @@
           </div>
           <div class="project-footer">
             <div class="stats">
-              <span><i class="fas fa-star"></i> 0</span>
-              <span><i class="fas fa-code-branch"></i> 0</span>
+              <span data-repo="agentic-cliniai/dermagent" data-type="stars"><i class="fas fa-star"></i> 0</span>
+              <span data-repo="agentic-cliniai/dermagent" data-type="forks"><i class="fas fa-code-branch"></i> 0</span>
             </div>
           </div>
         </div>
@@ -717,8 +717,8 @@
           </div>
           <div class="project-footer">
             <div class="stats">
-              <span><i class="fas fa-star"></i> 0</span>
-              <span><i class="fas fa-code-branch"></i> 0</span>
+              <span data-repo="agentic-cliniai/mobius" data-type="stars"><i class="fas fa-star"></i> 0</span>
+              <span data-repo="agentic-cliniai/mobius" data-type="forks"><i class="fas fa-code-branch"></i> 0</span>
             </div>
           </div>
         </div>
@@ -741,8 +741,8 @@
           </div>
           <div class="project-footer">
             <div class="stats">
-              <span><i class="fas fa-star"></i> 0</span>
-              <span><i class="fas fa-code-branch"></i> 0</span>
+              <span data-repo="agentic-cliniai/safeguard" data-type="stars"><i class="fas fa-star"></i> 0</span>
+              <span data-repo="agentic-cliniai/safeguard" data-type="forks"><i class="fas fa-code-branch"></i> 0</span>
             </div>
           </div>
         </div>
@@ -1167,6 +1167,24 @@
   }
 
   runDemo();
+
+  // Fetch GitHub repo stats
+  (async function() {
+    const repos = [...new Set([...document.querySelectorAll('[data-repo]')].map(el => el.dataset.repo))];
+    for (const repo of repos) {
+      try {
+        const res = await fetch('https://api.github.com/repos/' + repo);
+        if (!res.ok) continue;
+        const data = await res.json();
+        document.querySelectorAll('[data-repo="' + repo + '"][data-type="stars"]').forEach(el => {
+          el.innerHTML = '<i class="fas fa-star"></i> ' + data.stargazers_count;
+        });
+        document.querySelectorAll('[data-repo="' + repo + '"][data-type="forks"]').forEach(el => {
+          el.innerHTML = '<i class="fas fa-code-branch"></i> ' + data.forks_count;
+        });
+      } catch(e) {}
+    }
+  })();
   </script>
 </body>
 </html>
