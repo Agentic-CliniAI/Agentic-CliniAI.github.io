@@ -169,14 +169,44 @@
       margin-top: 30px; 
       flex-wrap: wrap; 
     }
-    .badge { 
-      display: inline-block; 
-      background: var(--secondary); 
-      color: white; 
-      padding: 5px 15px; 
-      border-radius: 30px; 
-      font-weight: 600; 
-      margin-top: 15px; 
+    .badge {
+      display: inline-block;
+      background: var(--secondary);
+      color: white;
+      padding: 5px 15px;
+      border-radius: 30px;
+      font-weight: 600;
+      margin-top: 15px;
+    }
+
+    .new-release {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 20px;
+      padding: 10px 24px;
+      background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+      color: white;
+      border-radius: 50px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.95rem;
+      transition: transform 0.3s, box-shadow 0.3s;
+      box-shadow: 0 4px 15px rgba(26,58,95,0.25);
+    }
+    .new-release:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(26,58,95,0.35);
+    }
+    .new-dot {
+      width: 8px; height: 8px;
+      background: #ff6b6b;
+      border-radius: 50%;
+      animation: pulse 1.5s ease-in-out infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(1.4); }
     }
 
     /* =============== 使命区 =============== */
@@ -441,22 +471,73 @@
     }
     @media (max-width: 768px) {
       .mobile-menu-btn { display: block; }
-      .nav-links { 
-        display: none; 
-        width: 100%; 
-        margin-top: 20px; 
-        flex-direction: column; 
-        align-items: center; 
+      .nav-links {
+        display: none;
+        width: 100%;
+        margin-top: 20px;
+        flex-direction: column;
+        align-items: center;
       }
       .nav-links.show { display: flex; }
       .nav-links li { margin: 10px 0; }
-      .hero-buttons { 
-        flex-direction: column; 
-        align-items: center; 
+      .hero-buttons {
+        flex-direction: column;
+        align-items: center;
       }
       .hero h1 { font-size: 2.8rem; }
       section { padding: 60px 0; }
+      .terminal { font-size: 0.78rem; min-height: 350px; padding: 14px; }
+      .case-btn { max-width: 100%; }
     }
+
+    /* =============== Demo 终端 =============== */
+    .demo-section { background-color: var(--light); }
+    .case-selector { display: flex; justify-content: center; gap: 15px; margin-bottom: 30px; flex-wrap: wrap; }
+    .case-btn {
+      padding: 12px 24px; border-radius: 10px; border: 2px solid #ddd;
+      background: white; cursor: pointer; font-size: 0.95rem; font-weight: 500;
+      color: var(--gray-700); transition: all 0.3s; text-align: left; max-width: 280px;
+    }
+    .case-btn:hover { border-color: var(--secondary); transform: translateY(-2px); box-shadow: var(--shadow); }
+    .case-btn.active { border-color: var(--secondary); background: rgba(39,174,96,0.05); }
+    .case-btn .case-title { font-weight: 700; color: var(--primary); margin-bottom: 4px; }
+    .case-btn .case-desc { font-size: 0.85rem; color: var(--gray-600); }
+
+    .terminal-wrapper {
+      max-width: 900px; margin: 0 auto; border-radius: var(--radius);
+      overflow: hidden; box-shadow: 0 8px 30px rgba(0,0,0,0.2);
+    }
+    .terminal-bar {
+      background: #2d2e3f; padding: 10px 16px;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .terminal-dot { width: 12px; height: 12px; border-radius: 50%; }
+    .terminal-dot.red { background: #ff5f57; }
+    .terminal-dot.yellow { background: #febc2e; }
+    .terminal-dot.green { background: #28c840; }
+    .terminal-bar-title { margin-left: 12px; color: #565f89; font-size: 0.85rem; font-family: monospace; }
+
+    .terminal {
+      background: #1a1b26; padding: 20px 24px;
+      font-family: 'Cascadia Code', 'Fira Code', 'JetBrains Mono', 'Consolas', monospace;
+      font-size: 0.88rem; line-height: 1.7; min-height: 420px;
+      max-height: 600px; overflow-y: auto; color: #c0caf5;
+    }
+    .terminal::-webkit-scrollbar { width: 6px; }
+    .terminal::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 3px; }
+
+    .term-line { opacity: 0; transform: translateY(5px); transition: opacity 0.3s, transform 0.3s; margin: 2px 0; white-space: pre-wrap; word-break: break-all; }
+    .term-line.visible { opacity: 1; transform: translateY(0); }
+    .term-line .green { color: #9ece6a; }
+    .term-line .cyan { color: #7dcfff; }
+    .term-line .yellow { color: #e0af68; }
+    .term-line .red { color: #f7768e; }
+    .term-line .magenta { color: #bb9af7; }
+    .term-line .dim { color: #565f89; }
+    .term-line .bold { font-weight: 700; }
+
+    .demo-hint { text-align: center; color: var(--gray-600); margin-top: 15px; font-size: 0.9rem; }
+    .demo-more { text-align: center; margin-top: 20px; }
   </style>
 </head>
 <body>
@@ -488,9 +569,49 @@
       <div class="badge"><i class="fas fa-shield-alt"></i> 开源 · 透明可溯 · 临床验证</div>
       <h1>赋能临床决策的<br>开源智能代理</h1>
       <p class="subtitle">构建安全、透明、可溯源的AI工具，辅助医疗专业人员提升诊疗效率与准确性，推动医疗公平</p>
+      <a href="#demo" class="new-release">
+        <span class="new-dot"></span> 全新发布 · DermAgent 皮肤科诊断智能体 — 468疾病知识库 · 迭代追问 · 多模态感知 <i class="fas fa-arrow-right"></i>
+      </a>
       <div class="hero-buttons">
         <a href="#projects" class="btn btn-primary">探索项目 <i class="fas fa-arrow-right"></i></a>
         <a href="#contribute" class="btn btn-outline">如何贡献</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- DermAgent Demo -->
+  <section class="demo-section" id="demo">
+    <div class="container">
+      <div class="section-title">
+        <h2><span class="new-dot" style="display:inline-block;width:10px;height:10px;background:#ff6b6b;border-radius:50;margin-right:8px;vertical-align:middle;"></span> 皮肤科诊断智能体 DEMO 展示</h2>
+        <p>选择一个预设病例，观看 DermAgent 的完整诊断流程动画</p>
+      </div>
+      <div class="case-selector">
+        <button class="case-btn active" data-case="sle" onclick="selectCase('sle')">
+          <div class="case-title">面部红斑3周</div>
+          <div class="case-desc">SLE（系统性红斑狼疮）— 20岁女性</div>
+        </button>
+        <button class="case-btn" data-case="psoriasis" onclick="selectCase('psoriasis')">
+          <div class="case-title">全身银白色鳞屑斑块2月</div>
+          <div class="case-desc">银屑病 — 慢性炎症性皮肤病</div>
+        </button>
+        <button class="case-btn" data-case="pemphigus" onclick="selectCase('pemphigus')">
+          <div class="case-title">反复松弛性水疱伴黏膜糜烂</div>
+          <div class="case-desc">天疱疮 — 自身免疫性水疱病</div>
+        </button>
+      </div>
+      <div class="terminal-wrapper">
+        <div class="terminal-bar">
+          <div class="terminal-dot red"></div>
+          <div class="terminal-dot yellow"></div>
+          <div class="terminal-dot green"></div>
+          <span class="terminal-bar-title">DermAgent — python main.py</span>
+        </div>
+        <div class="terminal" id="terminal"></div>
+      </div>
+      <p class="demo-hint"><i class="fas fa-info-circle"></i> 此为预录 Demo 动画，展示真实诊断流程。点击不同病例切换。</p>
+      <div class="demo-more">
+        <a href="dermagent.html" class="btn btn-outline"><i class="fas fa-arrow-right"></i> 查看完整 Demo 页面</a>
       </div>
     </div>
   </section>
@@ -525,6 +646,57 @@
         <p>模块化设计 · 临床验证 · 易于集成</p>
       </div>
       <div class="projects-grid">
+        <!-- DermAgent (Featured) -->
+        <div class="project-card" style="border: 2px solid var(--secondary);">
+          <div class="project-header" style="background: linear-gradient(135deg, rgba(39,174,96,0.08) 0%, rgba(41,128,185,0.08) 100%);">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <h3>DermAgent</h3>
+              <span style="background:var(--secondary); color:white; padding:3px 10px; border-radius:12px; font-size:0.75rem; font-weight:600;">NEW</span>
+            </div>
+            <div style="display:flex; gap:15px; margin-top:8px;">
+              <a href="dermagent.html">
+                <i class="fas fa-play-circle"></i> 在线 Demo
+              </a>
+              <a href="https://github.com/agentic-cliniai/dermagent" target="_blank">
+                GitHub <i class="fas fa-external-link-alt"></i>
+              </a>
+            </div>
+            <div style="display:flex; gap:20px; margin-top:15px; padding-top:12px; border-top:1px solid rgba(0,0,0,0.06);">
+              <div style="text-align:center;">
+                <div style="font-size:1.6rem;font-weight:800;color:var(--primary);line-height:1;">468</div>
+                <div style="font-size:0.75rem;color:var(--gray-600);margin-top:2px;">皮肤病种</div>
+              </div>
+              <div style="text-align:center;">
+                <div style="font-size:1.6rem;font-weight:800;color:var(--primary);line-height:1;">35+</div>
+                <div style="font-size:0.75rem;color:var(--gray-600);margin-top:2px;">ICD-10 类别</div>
+              </div>
+              <div style="text-align:center;">
+                <div style="font-size:1.6rem;font-weight:800;color:var(--primary);line-height:1;">11</div>
+                <div style="font-size:0.75rem;color:var(--gray-600);margin-top:2px;">检索工具</div>
+              </div>
+              <div style="text-align:center;">
+                <div style="font-size:1.6rem;font-weight:800;color:var(--primary);line-height:1;">4</div>
+                <div style="font-size:0.75rem;color:var(--gray-600);margin-top:2px;">感知模态</div>
+              </div>
+            </div>
+          </div>
+          <div class="project-body">
+            <p>基于 DeepRare 的皮肤科多Agent诊断系统：迭代追问、多模态感知、468疾病知识库</p>
+            <div class="tags">
+              <span class="tag">LangGraph</span>
+              <span class="tag">Multi-Agent</span>
+              <span class="tag">468疾病知识库</span>
+              <span class="tag">多模态感知</span>
+            </div>
+          </div>
+          <div class="project-footer">
+            <div class="stats">
+              <span><i class="fas fa-star"></i> 0</span>
+              <span><i class="fas fa-code-branch"></i> 0</span>
+            </div>
+          </div>
+        </div>
+
         <!-- 项目1 -->
         <div class="project-card">
           <div class="project-header">
@@ -757,6 +929,242 @@
         }
       });
     });
+  </script>
+
+  <script>
+  // Terminal Demo
+  const CASES = {
+    sle: {
+      stages: [
+        { type: 'header', text: 'DermAgent — 皮肤科诊断Agent系统\nMulti-agent diagnostic system for dermatology' },
+        { type: 'input', label: '主诉', text: '面部红斑3周' },
+        { type: 'input', label: '年龄', text: '20' },
+        { type: 'input', label: '性别', text: '女' },
+        { type: 'stage', name: '主诉分析', detail: '初始印象: 接触性皮炎, 脂溢性皮炎, 玫瑰痤疮, SLE' },
+        { type: 'sub', items: [
+          { text: '▪ 接触性皮炎', color: 'cyan' },
+          { text: '▪ 脂溢性皮炎', color: 'cyan' },
+          { text: '▪ 玫瑰痤疮', color: 'cyan' },
+          { text: '▪ 系统性红斑狼疮', color: 'cyan' },
+          { text: '? 需确认分布区域、光敏感、接触史、全身症状', color: 'dim' },
+        ]},
+        { type: 'stage', name: '追问与检查规划  迭代#1', detail: '4 个追问 · 4 项检查' },
+        { type: 'sub', items: [
+          { text: 'Q1: 红斑分布在面部哪些区域？  →  两边脸颊和鼻梁，对称，边界不清', color: 'default' },
+          { text: 'Q2: 有无瘙痒灼热？是否日晒后加重？  →  发烫发痒，晒太阳后明显加重', color: 'default' },
+          { text: 'Q3: 发病前是否换过护肤品？  →  最近换了新防晒霜和洗面奶', color: 'default' },
+          { text: 'Q4: 有无口腔溃疡、脱发、关节痛、发热？  →  没有溃疡和关节痛，但感觉累，有时低烧', color: 'default' },
+          { text: '检查: 皮肤镜, ANA+dsDNA抗体, 皮肤病理, 斑贴试验', color: 'yellow' },
+        ]},
+        { type: 'stage', name: '多模态证据采集', detail: '体格检查完成' },
+        { type: 'sub', items: [
+          { text: '[physical] 皮肤散在皮疹; 未见特征性分布模式 (置信度: 0.4)', color: 'magenta' },
+        ]},
+        { type: 'stage', name: '知识检索', detail: '本地知识库 + Web Search + DermNet' },
+        { type: 'sub', items: [
+          { text: 'LLM诊断: 系统性红斑狼疮, 光变应性接触性皮炎, 玫瑰痤疮', color: 'cyan' },
+        ]},
+        { type: 'stage', name: 'Memory 1 · 知识融合', detail: '融合完成' },
+        { type: 'stage', name: 'Check_Agent · 疾病验证', detail: '验证 5 个诊断' },
+        { type: 'sub', items: [
+          { text: '✘ 光变应性接触性皮炎  核心皮损停用后仍持续', color: 'red' },
+          { text: '✘ 系统性红斑狼疮  毛细血管扩张更符合玫瑰痤疮，缺少血清学证据', color: 'red' },
+        ]},
+        { type: 'stage', name: '信息充分性评估', detail: '路由: → 追加追问' },
+        { type: 'stage', name: '追问与检查规划  迭代#2', detail: '5 个追问 · 3 项检查' },
+        { type: 'sub', items: [
+          { text: 'Q5: 停用新护肤品后有无减轻？  →  灼热稍减轻，红斑没完全消', color: 'default' },
+          { text: 'Q6: 头皮眉毛鼻唇沟是否油腻发红？  →  没有', color: 'default' },
+          { text: 'Q7: 能否看到扩张的红血丝？  →  能看到，一热就更明显', color: 'default' },
+          { text: '检查: 皮肤镜, ANA+dsDNA+ENA抗体谱, 补体C3/C4+血常规+尿常规', color: 'yellow' },
+        ]},
+        { type: 'stage', name: '知识检索  搜索深度:2', detail: '+ DermNet + Orphanet + OMIM' },
+        { type: 'stage', name: 'Memory 1 · 知识融合', detail: '融合完成 (迭代#2)' },
+        { type: 'stage', name: 'Check_Agent · 疾病验证', detail: '验证 5 个诊断' },
+        { type: 'sub', items: [
+          { text: '✘ 光变应性接触性皮炎  持续皮损+系统症状无法解释', color: 'red' },
+          { text: '✘ 系统性红斑狼疮  毛细血管扩张+丘疹更似玫瑰痤疮，缺少血清学证据', color: 'red' },
+        ]},
+        { type: 'stage', name: '信息充分性评估', detail: '路由: → 生成最终诊断' },
+        { type: 'stage', name: 'Memory 2 · 最终诊断', detail: '生成 5 个鉴别诊断' },
+        { type: 'sub', items: [
+          { text: '#1 系统性红斑狼疮 (SLE)  █████████░ 90%', color: 'default', bold: true },
+          { text: '       青年女性+蝶形红斑+光敏感+乏力低热 → 符合ACR标准', color: 'dim' },
+          { text: '#2 SLE  ███████░░░ 75%', color: 'default' },
+          { text: '#3 玫瑰痤疮  ██████░░░░ 60%', color: 'default' },
+          { text: '#4 亚急性皮肤型红斑狼疮  ████░░░░░░ 45%', color: 'default' },
+          { text: '#5 SCLE  ███░░░░░░░ 30%', color: 'default' },
+        ]},
+        { type: 'stage', name: '报告生成', detail: '报告已生成' },
+        { type: 'sub', items: [
+          { text: '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━', color: 'dim' },
+          { text: '【主要诊断】系统性红斑狼疮 (SLE)  置信度: 80%', color: 'bold green' },
+          { text: '依据: 青年女性蝶形红斑+光敏感+毛细血管扩张+乏力低热', color: 'default' },
+          { text: '建议: 严格防晒 + 转诊风湿免疫科 → ANA+dsDNA+补体+皮肤活检', color: 'yellow' },
+          { text: '迭代次数: 2, 搜索深度: 2', color: 'dim' },
+        ]},
+      ]
+    },
+    psoriasis: {
+      stages: [
+        { type: 'header', text: 'DermAgent — 皮肤科诊断Agent系统\nMulti-agent diagnostic system for dermatology' },
+        { type: 'input', label: '主诉', text: '全身银白色鳞屑斑块2月' },
+        { type: 'stage', name: '主诉分析', detail: '初始印象: 银屑病, 湿疹, 玫瑰糠疹' },
+        { type: 'sub', items: [
+          { text: '▪ 银屑病', color: 'cyan' },
+          { text: '▪ 湿疹', color: 'cyan' },
+          { text: '▪ 玫瑰糠疹', color: 'cyan' },
+        ]},
+        { type: 'stage', name: '追问与检查规划', detail: '3 个追问 · 3 项检查' },
+        { type: 'sub', items: [
+          { text: 'Q1: 鳞屑是否容易刮除？刮除后有无点状出血？  →  可刮除，刮后有出血点', color: 'default' },
+          { text: 'Q2: 皮损是否累及头皮或指甲？  →  头皮有类似斑块，指甲有点状凹陷', color: 'default' },
+          { text: 'Q3: 家族中是否有类似皮肤病？  →  父亲有银屑病史', color: 'default' },
+          { text: '检查: 皮肤镜, 皮肤病理, 血常规+CRP', color: 'yellow' },
+        ]},
+        { type: 'stage', name: '多模态证据采集', detail: '3 项检查完成' },
+        { type: 'sub', items: [
+          { text: '[dermoscopy] 银白色鳞屑; 红色背景; 规则血管球', color: 'magenta' },
+          { text: '[histopath] 角化过度伴角化不全; Munro微脓肿; 棘层肥厚', color: 'magenta' },
+          { text: '[lab] CRP轻度升高; HLA-B27阳性', color: 'magenta' },
+        ]},
+        { type: 'stage', name: '知识检索', detail: '本地知识库 + Web Search + DermNet' },
+        { type: 'stage', name: 'Memory 1 · 知识融合', detail: '融合完成' },
+        { type: 'stage', name: 'Check_Agent · 疾病验证', detail: '验证 5 个诊断 (4 通过)' },
+        { type: 'sub', items: [
+          { text: '✔ 寻常型银屑病  完全符合（Auspitz征+头皮/甲受累+家族史+典型病理）', color: 'green' },
+          { text: '✘ 湿疹  不符合（缺少海绵水肿和剧烈瘙痒）', color: 'red' },
+          { text: '✔ 毛发红糠疹  需排除', color: 'green' },
+        ]},
+        { type: 'stage', name: 'Memory 2 · 最终诊断', detail: '生成 5 个鉴别诊断' },
+        { type: 'sub', items: [
+          { text: '#1 寻常型银屑病  █████████░ 92%', color: 'default', bold: true },
+          { text: '       Auspitz征+头皮/甲受累+家族史+Munro微脓肿', color: 'dim' },
+          { text: '#2 毛发红糠疹  ████░░░░░░ 38%', color: 'default' },
+          { text: '#3 副银屑病  ███░░░░░░░ 28%', color: 'default' },
+          { text: '#4 玫瑰糠疹  ██░░░░░░░░ 18%', color: 'default' },
+          { text: '#5 湿疹  █░░░░░░░░░ 10%', color: 'default' },
+        ]},
+        { type: 'stage', name: '报告生成', detail: '报告已生成' },
+        { type: 'sub', items: [
+          { text: '【主要诊断】寻常型银屑病  置信度: 92%', color: 'bold green' },
+          { text: '建议: 皮肤科规范治疗，评估PASI评分', color: 'yellow' },
+        ]},
+      ]
+    },
+    pemphigus: {
+      stages: [
+        { type: 'header', text: 'DermAgent — 皮肤科诊断Agent系统\nMulti-agent diagnostic system for dermatology' },
+        { type: 'input', label: '主诉', text: '反复松弛性水疱伴黏膜糜烂' },
+        { type: 'stage', name: '主诉分析', detail: '初始印象: 天疱疮, 大疱性类天疱疮, 线性IgA大疱性皮病' },
+        { type: 'sub', items: [
+          { text: '▪ 天疱疮', color: 'cyan' },
+          { text: '▪ 大疱性类天疱疮', color: 'cyan' },
+          { text: '▪ 线性IgA大疱性皮病', color: 'cyan' },
+        ]},
+        { type: 'stage', name: '追问与检查规划', detail: '3 个追问 · 4 项检查' },
+        { type: 'sub', items: [
+          { text: 'Q1: 水疱是松弛性还是紧张性？  →  松弛性，容易破裂', color: 'default' },
+          { text: 'Q2: 摩擦正常皮肤是否出现水疱？  →  是，轻搓后出现', color: 'default' },
+          { text: 'Q3: 口腔/生殖器黏膜是否受累？  →  口腔多处糜烂，进食疼痛', color: 'default' },
+          { text: '检查: 皮肤镜, 皮肤病理+DIF, 血清自身抗体, 血常规', color: 'yellow' },
+        ]},
+        { type: 'stage', name: '多模态证据采集', detail: '4 项检查完成' },
+        { type: 'sub', items: [
+          { text: '[histopath] 表皮内水疱; 棘层松解细胞; 基底细胞附着于真皮', color: 'magenta' },
+          { text: '[lab] DIF: 表皮细胞间IgG/C3网状沉积; 抗Dsg1(+), 抗Dsg3(+)', color: 'magenta' },
+          { text: '[physical] Nikolsky征(+); 口腔黏膜多发糜烂', color: 'magenta' },
+        ]},
+        { type: 'stage', name: '知识检索', detail: '本地知识库 + HPO + Orphanet + DermNet' },
+        { type: 'stage', name: 'Memory 1 · 知识融合', detail: '融合完成' },
+        { type: 'stage', name: 'Check_Agent · 疾病验证', detail: '验证 5 个诊断 (4 通过)' },
+        { type: 'sub', items: [
+          { text: '✔ 寻常型天疱疮  完全符合（棘层松解+IgG细胞间沉积+Dsg3阳性）', color: 'green' },
+          { text: '✘ 大疱性类天疱疮  不符合（表皮下水疱，紧张性）', color: 'red' },
+          { text: '✔ 副肿瘤性天疱疮  需排除', color: 'green' },
+        ]},
+        { type: 'stage', name: 'Memory 2 · 最终诊断', detail: '生成 5 个鉴别诊断' },
+        { type: 'sub', items: [
+          { text: '#1 寻常型天疱疮  █████████░ 93%', color: 'default', bold: true },
+          { text: '       松弛性水疮+Nikolsky征+棘层松解+IgG沉积+黏膜受累', color: 'dim' },
+          { text: '#2 增殖型天疱疮  ████░░░░░░ 35%', color: 'default' },
+          { text: '#3 副肿瘤性天疱疮  ███░░░░░░░ 22%', color: 'default' },
+          { text: '#4 线性IgA大疱性皮病  ██░░░░░░░░ 15%', color: 'default' },
+          { text: '#5 大疱性类天疱疮  █░░░░░░░░░ 8%', color: 'default' },
+        ]},
+        { type: 'stage', name: '报告生成', detail: '报告已生成' },
+        { type: 'sub', items: [
+          { text: '【主要诊断】寻常型天疱疮  置信度: 93%', color: 'bold green' },
+          { text: '建议: 皮肤科急诊，启动糖皮质激素+免疫抑制剂治疗', color: 'yellow' },
+        ]},
+      ]
+    }
+  };
+
+  let currentCase = 'sle';
+  let animTimers = [];
+
+  function selectCase(id) {
+    currentCase = id;
+    document.querySelectorAll('.case-btn').forEach(b => b.classList.toggle('active', b.dataset.case === id));
+    runDemo();
+  }
+
+  function esc(s) { return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+  function cs(text, color) {
+    if (!color || color === 'default') return esc(text);
+    return '<span class="'+color+'">'+esc(text)+'</span>';
+  }
+
+  function addLine(html) {
+    const t = document.getElementById('terminal');
+    const d = document.createElement('div');
+    d.className = 'term-line';
+    d.innerHTML = html;
+    t.appendChild(d);
+    requestAnimationFrame(() => requestAnimationFrame(() => d.classList.add('visible')));
+    t.scrollTop = t.scrollHeight;
+  }
+
+  function runDemo() {
+    animTimers.forEach(t => clearTimeout(t));
+    animTimers = [];
+    document.getElementById('terminal').innerHTML = '';
+    let delay = 200;
+    CASES[currentCase].stages.forEach(stage => {
+      if (stage.type === 'header') {
+        animTimers.push(setTimeout(() => {
+          addLine(cs('╭──────────────────────────────────────────────╮','dim'));
+          stage.text.split('\n').forEach(l => addLine(cs('│ ','dim') + cs(l,'cyan')));
+          addLine(cs('╰──────────────────────────────────────────────╯','dim'));
+          addLine('');
+        }, delay));
+        delay += 300;
+      } else if (stage.type === 'input') {
+        animTimers.push(setTimeout(() => {
+          addLine(cs('\n'+stage.label+'：','yellow') + esc(stage.text));
+        }, delay));
+        delay += 350;
+      } else if (stage.type === 'stage') {
+        animTimers.push(setTimeout(() => {
+          addLine(cs('  ✔ ','green') + cs(stage.name,'bold') + cs('  — '+stage.detail,'dim'));
+        }, delay));
+        delay += 350;
+      } else if (stage.type === 'sub') {
+        stage.items.forEach(item => {
+          animTimers.push(setTimeout(() => {
+            let h = item.color && item.color !== 'default' ? cs(item.text, item.color) : esc(item.text);
+            if (item.bold) h = '<span class="bold">'+h+'</span>';
+            addLine('    '+h);
+          }, delay));
+          delay += 100;
+        });
+        delay += 100;
+      }
+    });
+  }
+
+  runDemo();
   </script>
 </body>
 </html>
